@@ -1,0 +1,189 @@
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
+
+--#################################################
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0.4, 0, 0.4, 0)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(230, 179, 39)
+MainFrame.Parent = ScreenGui
+
+local Corner = Instance.new("UICorner")
+local Stroke = Instance.new("UIStroke")
+
+Corner:Clone().Parent = MainFrame
+local MainFrame_Stroke = Stroke:Clone()
+MainFrame_Stroke.Parent = MainFrame
+MainFrame_Stroke.Thickness = 5
+MainFrame_Stroke.Color = Color3.fromRGB(217, 168, 35)
+
+--#################################################
+
+local MainFrame_Title_Frame = Instance.new("Frame")
+MainFrame_Title_Frame.Size = UDim2.new(1, 0, 0.15, 0)
+MainFrame_Title_Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame_Title_Frame.Position = UDim2.new(0.5, 0, 0.09, 0)
+MainFrame_Title_Frame.BackgroundColor3 = Color3.fromRGB(230, 179, 39)
+MainFrame_Title_Frame.BorderSizePixel = 0
+MainFrame_Title_Frame.Parent = MainFrame
+
+local MainFrame_Title = Instance.new("TextLabel")
+MainFrame_Title.Size = UDim2.new(1, 0, 1, 0)
+MainFrame_Title.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame_Title.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame_Title.BackgroundTransparency = 1
+MainFrame_Title.Text = "Character Changes"
+MainFrame_Title.TextScaled = true
+MainFrame_Title.BorderSizePixel = 0
+MainFrame_Title.Parent = MainFrame_Title_Frame
+
+--#################################################
+
+local DisplayFrame = Instance.new("ScrollingFrame")
+DisplayFrame.AutomaticCanvasSize = "Y"
+DisplayFrame.ScrollBarImageTransparency = 1
+DisplayFrame.ScrollBarThickness = 0
+DisplayFrame.Size = UDim2.new(0.975, 0, 0.8, 0)
+DisplayFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+DisplayFrame.Position = UDim2.new(0.5, 0, 0.575, 0)
+DisplayFrame.BackgroundTransparency = 1
+local DisplayPadding = Instance.new("UIPadding")
+DisplayPadding.PaddingTop = UDim.new(0.005, 0)
+DisplayPadding.PaddingBottom = UDim.new(0.05, 0)
+DisplayPadding.PaddingLeft = UDim.new(0.005, 0)
+DisplayPadding.PaddingRight = UDim.new(0.005, 0)
+DisplayPadding.Parent = DisplayFrame
+DisplayFrame.Parent = MainFrame
+
+local DisplayGrid = Instance.new("UIGridLayout")
+DisplayGrid.CellSize = UDim2.new(0.475, 0, 0.35, 0)
+DisplayGrid.FillDirectionMaxCells = 2
+DisplayGrid.HorizontalAlignment = "Center"
+DisplayGrid.CellPadding = UDim2.new(0.05, 0, 0.05, 0)
+DisplayGrid.Parent = DisplayFrame
+
+--#################################################
+
+local Grid_Tile_Template = Instance.new("Frame")
+--Grid_Tile_Template.Parent = DisplayFrame
+
+local Template_Title_Bar = Instance.new("Frame")
+Template_Title_Bar.Size = UDim2.new(1, 0, 0.25, 0)
+Template_Title_Bar.AnchorPoint = Vector2.new(0.5, 0.5)
+Template_Title_Bar.Position = UDim2.new(0.5, 0, 0.15, 0)
+Template_Title_Bar.BackgroundColor3 = Color3.fromRGB(230, 179, 39)
+Template_Title_Bar.BorderSizePixel = 0
+Template_Title_Bar.Name = "Title_Bar"
+Template_Title_Bar.Parent = Grid_Tile_Template
+
+local Template_Title = Instance.new("TextLabel")
+Template_Title.Size = UDim2.new(1, 0, 1, 0)
+Template_Title.AnchorPoint = Vector2.new(0.5, 0.5)
+Template_Title.Position = UDim2.new(0.5, 0, 0.5, 0)
+Template_Title.BackgroundTransparency = 1
+Template_Title.Text = "Title"
+Template_Title.TextScaled = true
+Template_Title.BorderSizePixel = 0
+Template_Title.Name = "Title_Text"
+Template_Title.Parent = Template_Title_Bar
+
+local Template_Display_Frame = Instance.new("Frame")
+Template_Display_Frame.Size = UDim2.new(1, 0, 0.4, 0)
+Template_Display_Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Template_Display_Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+Template_Display_Frame.BackgroundTransparency = 0
+local Template_DisplayPadding = Instance.new("UIPadding")
+Template_DisplayPadding.PaddingTop = UDim.new(0.005, 0)
+Template_DisplayPadding.PaddingBottom = UDim.new(0.05, 0)
+Template_DisplayPadding.PaddingLeft = UDim.new(0.005, 0)
+Template_DisplayPadding.PaddingRight = UDim.new(0.005, 0)
+Template_Display_Frame.Name = "Display_Frame"
+Template_Display_Frame.Parent = Grid_Tile_Template
+Template_DisplayPadding.Parent = Template_Display_Frame
+
+local Template_Grid = Instance.new("UIGridLayout")
+Template_Grid.CellSize = UDim2.new(0.5, 0, 0.5, 0)
+Template_Grid.FillDirectionMaxCells = 2
+Template_Grid.HorizontalAlignment = "Center"
+Template_Grid.CellPadding = UDim2.new(0, 0, 0, 0)
+--Template_Grid.Parent = Template_Display_Frame
+
+local Template_Frame_Label = Instance.new("TextLabel")
+Template_Frame_Label.Size = UDim2.new(0.5, 0, 0.9, 0)
+Template_Frame_Label.AnchorPoint = Vector2.new(0, 0.5)
+Template_Frame_Label.Position = UDim2.new(0, 0, 0.51, 0)
+Template_Frame_Label.BackgroundTransparency = 0
+Template_Frame_Label.Text = "Label"
+Template_Frame_Label.TextScaled = true
+Template_Frame_Label.BorderSizePixel = 1
+Template_Frame_Label.Name = "Input_Label"
+Template_Frame_Label.Parent = Template_Display_Frame
+
+local Template_Frame_Input = Instance.new("TextBox")
+Template_Frame_Input.Size = UDim2.new(0.5, 0, 0.9, 0)
+Template_Frame_Input.AnchorPoint = Vector2.new(1, 0.5)
+Template_Frame_Input.Position = UDim2.new(1, 0, 0.51, 0)
+Template_Frame_Input.Text = "Input"
+Template_Frame_Input.TextScaled = true
+Template_Frame_Input.BorderSizePixel = 1
+Template_Frame_Input.Name = "Input"
+Template_Frame_Input.Parent = Template_Display_Frame
+
+local Template_Frame_Description = Instance.new("TextLabel")
+Template_Frame_Description.Size = UDim2.new(1, 0, 0.25, 0)
+Template_Frame_Description.AnchorPoint = Vector2.new(0.5, 0.5)
+Template_Frame_Description.Position = UDim2.new(0.5, 0, 0.85, 0)
+Template_Frame_Description.BackgroundTransparency = 1
+Template_Frame_Description.Text = "This is a very long Description to test the Size of the Description Frame"
+Template_Frame_Description.TextScaled = true
+Template_Frame_Description.BorderSizePixel = 0
+Template_Frame_Description.Name = "Description"
+Template_Frame_Description.Parent = Grid_Tile_Template
+
+--#################################################
+
+local Tile_Values = {
+	Sprint = {
+		Title = "Sprint",
+		Input_Label = "Sprint Speed",
+		Input_Value = 16,
+		Description = "Hold down [SHIFT] to sprint, change the value to sprint faster or slower.",
+		Title_Color = Color3.fromRGB(217, 37, 37)
+	},
+	Walk = {
+		Title = "Walk",
+		Input_Label = "Walk Speed",
+		Input_Value = 16,
+		Description = "Set how fast you will walk.",
+		Title_Color = Color3.fromRGB(52, 152, 199)
+	},
+	Jump = {
+		Title = "Jump",
+		Input_Label = "Jump Height",
+		Input_Value = 10,
+		Description = "Set how high you will jump.",
+		Title_Color = Color3.fromRGB(25, 179, 48)
+	},
+	HipHeight = {
+		Title = "Hip Height",
+		Input_Label = "Hip Height",
+		Input_Value = 10,
+		Description = "Change the default height of your character.",
+		Title_Color = Color3.fromRGB(176, 171, 18)
+	},
+}
+
+for i, v in pairs(Tile_Values) do
+	local Tile = Grid_Tile_Template:Clone()
+	Tile.Title_Bar.Title_Text.Text = Tile_Values[i].Title
+	Tile.Display_Frame.Input_Label.Text = Tile_Values[i].Input_Label
+	Tile.Display_Frame.Input.Text = Tile_Values[i].Input_Value
+	Tile.Description.Text = Tile_Values[i].Description
+	Tile.Title_Bar.BackgroundColor3 = Tile_Values[i].Title_Color
+	Tile.Parent = DisplayFrame
+end
+
+wait(5)
+ScreenGui:Destroy()
