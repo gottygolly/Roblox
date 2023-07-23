@@ -1,12 +1,23 @@
+local player = game.Players.LocalPlayer
+local playerMouse = player:GetMouse()
+local playerChar = player.Character
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local StartingRunValue = playerChar.Humanoid.WalkSpeed
+
+--#################################################
+
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
 
 --#################################################
 
+local MainFrame_Size = UDim2.new(0.4, 0, 0.4, 0)
+local MainFrame_Position = UDim2.new(0.5, 0, 0.5, 0)
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0.4, 0, 0.4, 0)
+MainFrame.Size = MainFrame_Size
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.Position = MainFrame_Position
 MainFrame.BackgroundColor3 = Color3.fromRGB(230, 179, 39)
 MainFrame.Parent = ScreenGui
 
@@ -21,13 +32,86 @@ MainFrame_Stroke.Color = Color3.fromRGB(217, 168, 35)
 
 --#################################################
 
+local TopFrame_Size = UDim2.new(0.4, 0, 0.075, 0)
+local TopFrame_Position = UDim2.new(0.5, 0, 0.335, 0)
+local TopFrame = Instance.new("Frame")
+TopFrame.Size = TopFrame_Size
+TopFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+TopFrame.Position = TopFrame_Position
+TopFrame.BackgroundColor3 = Color3.fromRGB(230, 179, 39)
+TopFrame.Parent = ScreenGui
+
+Corner:Clone().Parent = TopFrame
+local TopFrame_Stroke = Stroke:Clone()
+TopFrame_Stroke.Parent = MainFrame
+TopFrame_Stroke.Thickness = 5
+TopFrame_Stroke.Color = Color3.fromRGB(217, 168, 35)
+--#################################################
+
+local Window_Control_Padding = Instance.new("UIPadding")
+Window_Control_Padding.PaddingTop = UDim.new(0.005, 0)
+Window_Control_Padding.PaddingBottom = UDim.new(0.05, 0)
+Window_Control_Padding.PaddingLeft = UDim.new(0.005, 0)
+Window_Control_Padding.PaddingRight = UDim.new(0.005, 0)
+
+local Window_Control_Corner = Corner:Clone()
+--Window_Control_Corner.CornerRadius = UDim.new(1, 0)
+
+local Window_Control_Stroke = Stroke:Clone()
+Window_Control_Stroke.Thickness = 3
+Window_Control_Stroke.ApplyStrokeMode = "Border"
+Window_Control_Stroke.Color = Color3.fromRGB(217, 168, 35)
+
+local Window_Control_Frame_Size = UDim2.new(1, 0, 0.3, 0)
+local Window_Control_Frame_Position = UDim2.new(0.99, 0, -0.3, 0)
+local Window_Control_Frame = Instance.new("Frame")
+Window_Control_Frame.Size = Window_Control_Frame_Size
+Window_Control_Frame.AnchorPoint = Vector2.new(1, 0)
+Window_Control_Frame.Position = Window_Control_Frame_Position
+Window_Control_Frame.BackgroundTransparency = 1
+Window_Control_Frame.Name = "Window_Control"
+Window_Control_Frame.Parent = TopFrame
+
+local Window_Control_Minimize = Instance.new("TextButton")
+Window_Control_Minimize.Size = UDim2.new(0.05, 0, 1, 0)
+Window_Control_Minimize.AnchorPoint = Vector2.new(1, 0.5)
+Window_Control_Minimize.Position = UDim2.new(0.89, 0, 0.5, 0)
+Window_Control_Minimize.Text = "-"
+Window_Control_Minimize.TextScaled = true
+Window_Control_Padding:Clone().Parent = Window_Control_Minimize
+Window_Control_Stroke:Clone().Parent = Window_Control_Minimize
+Window_Control_Minimize.Parent = Window_Control_Frame
+
+local Window_Control_Maximize = Instance.new("TextButton")
+Window_Control_Maximize.Size = UDim2.new(0.05, 0, 1, 0)
+Window_Control_Maximize.AnchorPoint = Vector2.new(1, 0.5)
+Window_Control_Maximize.Position = UDim2.new(0.945, 0, 0.5, 0)
+Window_Control_Maximize.Text = "[ ]"
+Window_Control_Maximize.TextScaled = true
+Window_Control_Padding:Clone().Parent = Window_Control_Maximize
+Window_Control_Stroke:Clone().Parent = Window_Control_Maximize
+Window_Control_Maximize.Parent = Window_Control_Frame
+
+local Window_Control_Exit = Instance.new("TextButton")
+Window_Control_Exit.Size = UDim2.new(0.05, 0, 1, 0)
+Window_Control_Exit.AnchorPoint = Vector2.new(1, 0.5)
+Window_Control_Exit.Position = UDim2.new(1, 0, 0.5, 0)
+Window_Control_Exit.Text = "X"
+Window_Control_Exit.TextScaled = true
+Window_Control_Padding:Clone().Parent = Window_Control_Exit
+Window_Control_Stroke:Clone().Parent = Window_Control_Exit
+Window_Control_Exit.Parent = Window_Control_Frame
+
+--#################################################
+
 local MainFrame_Title_Frame = Instance.new("Frame")
-MainFrame_Title_Frame.Size = UDim2.new(1, 0, 0.15, 0)
+MainFrame_Title_Frame.Size = UDim2.new(1, 0, 1, 0)
 MainFrame_Title_Frame.AnchorPoint = Vector2.new(0.5, 0.5)
-MainFrame_Title_Frame.Position = UDim2.new(0.5, 0, 0.09, 0)
+MainFrame_Title_Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
 MainFrame_Title_Frame.BackgroundColor3 = Color3.fromRGB(230, 179, 39)
 MainFrame_Title_Frame.BorderSizePixel = 0
-MainFrame_Title_Frame.Parent = MainFrame
+MainFrame_Title_Frame.BackgroundTransparency = 1
+MainFrame_Title_Frame.Parent = TopFrame
 
 local MainFrame_Title = Instance.new("TextLabel")
 MainFrame_Title.Size = UDim2.new(1, 0, 1, 0)
@@ -147,29 +231,33 @@ Template_Frame_Description.Parent = Grid_Tile_Template
 local Tile_Values = {
 	Sprint = {
 		Title = "Sprint",
+		EnumValue = "Sprint",
 		Input_Label = "Sprint Speed",
 		Input_Value = 16,
-		Description = "Hold down [SHIFT] to sprint, change the value to sprint faster or slower.",
+		Description = "Hold down [SHIFT] to sprint, change the value to sprint faster or slower. Note: This value is added to your walkspeed when sprinting.",
 		Title_Color = Color3.fromRGB(217, 37, 37)
 	},
 	Walk = {
 		Title = "Walk",
+		EnumValue = "WalkSpeed",
 		Input_Label = "Walk Speed",
-		Input_Value = 16,
+		Input_Value = playerChar.Humanoid.WalkSpeed,
 		Description = "Set how fast you will walk.",
 		Title_Color = Color3.fromRGB(52, 152, 199)
 	},
 	Jump = {
 		Title = "Jump",
+		EnumValue = "JumpHeight",
 		Input_Label = "Jump Height",
-		Input_Value = 10,
+		Input_Value = playerChar.Humanoid.JumpHeight,
 		Description = "Set how high you will jump.",
 		Title_Color = Color3.fromRGB(25, 179, 48)
 	},
 	HipHeight = {
 		Title = "Hip Height",
+		EnumValue = "HipHeight",
 		Input_Label = "Hip Height",
-		Input_Value = 10,
+		Input_Value = playerChar.Humanoid.HipHeight,
 		Description = "Change the default height of your character.",
 		Title_Color = Color3.fromRGB(176, 171, 18)
 	},
@@ -182,8 +270,68 @@ for i, v in pairs(Tile_Values) do
 	Tile.Display_Frame.Input.Text = Tile_Values[i].Input_Value
 	Tile.Description.Text = Tile_Values[i].Description
 	Tile.Title_Bar.BackgroundColor3 = Tile_Values[i].Title_Color
+	Tile.Display_Frame.Input:GetPropertyChangedSignal("Text"):Connect(function(NewValue)
+		if Tile_Values[i].EnumValue ~= "Sprint" then
+			playerChar.Humanoid[Tile_Values[i].EnumValue] = tonumber(Tile.Display_Frame.Input.Text)
+			Tile_Values[i].InputValue = Tile.Display_Frame.Input.Text
+		end
+	end)
 	Tile.Parent = DisplayFrame
 end
 
-wait(5)
-ScreenGui:Destroy()
+local function onInputBegan(input, gameProcess)
+	if input.KeyCode == Enum.KeyCode.LeftShift then
+		playerChar.Humanoid.WalkSpeed = Tile_Values.Walk.Input_Value + Tile_Values.Sprint.Input_Value
+	end
+end
+
+local function onInputEnd(input, gameProcess)
+	if input.KeyCode == Enum.KeyCode.LeftShift then
+		playerChar.Humanoid.WalkSpeed = Tile_Values.Walk.Input_Value
+	end
+end
+
+local InputBegan_Connect = UserInputService.InputBegan:Connect(onInputBegan)
+local InputEnd_Connect = UserInputService.InputEnded:Connect(onInputEnd)
+
+
+
+local MainFrameGrab = MainFrame-- Reference to your MainFrame GUI here
+
+-- Define the tween properties for showing and hiding the MainFrame
+local hideTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+
+-- Function to tween the MainFrame to the desired position
+local function tweenMainFrame(position, size, mainFrame_Visible)
+    local tween = TweenService:Create(MainFrameGrab, hideTweenInfo, { Position = position, Size = size })
+    if MainFrame.Visible then
+    	tween:Play()
+    else
+    	MainFrame.Visible = true
+    	tween:Play()
+    end
+    tween.Completed:Wait()
+    MainFrame.Visible = mainFrame_Visible
+end
+
+local function tweenTopFrame(position, size)
+    local tween = TweenService:Create(TopFrame, hideTweenInfo, { Position = position, Size = size })
+    tween:Play()
+    tween.Completed:Wait(1)
+end
+
+Window_Control_Minimize.Activated:Connect(function()
+	tweenMainFrame(UDim2.new(0.5, 0, 0.34, 0), UDim2.new(0.3, 0, 0, 0), false)
+	tweenTopFrame(UDim2.new(0.1, 0, 0.975, 0), UDim2.new(0.2, 0, 0.05, 0))
+end)
+
+Window_Control_Maximize.Activated:Connect(function()
+	tweenTopFrame(TopFrame_Position, TopFrame_Size)
+	tweenMainFrame(MainFrame_Position, MainFrame_Size, true)
+end)
+
+Window_Control_Exit.Activated:Connect(function()
+	InputBegan_Connect:Disconnect()
+	InputEnd_Connect:Disconnect()
+	ScreenGui:Destroy()
+end)
