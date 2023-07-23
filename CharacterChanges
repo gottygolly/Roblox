@@ -46,6 +46,7 @@ local TopFrame_Stroke = Stroke:Clone()
 TopFrame_Stroke.Parent = MainFrame
 TopFrame_Stroke.Thickness = 5
 TopFrame_Stroke.Color = Color3.fromRGB(217, 168, 35)
+
 --#################################################
 
 local Window_Control_Padding = Instance.new("UIPadding")
@@ -294,8 +295,6 @@ end
 local InputBegan_Connect = UserInputService.InputBegan:Connect(onInputBegan)
 local InputEnd_Connect = UserInputService.InputEnded:Connect(onInputEnd)
 
-
-
 local MainFrameGrab = MainFrame-- Reference to your MainFrame GUI here
 
 -- Define the tween properties for showing and hiding the MainFrame
@@ -307,6 +306,7 @@ local function tweenMainFrame(position, size, mainFrame_Visible)
     if MainFrame.Visible then
     	tween:Play()
     else
+    	MainFrame.Position = TopFrame.Position
     	MainFrame.Visible = true
     	tween:Play()
     end
@@ -321,7 +321,7 @@ local function tweenTopFrame(position, size)
 end
 
 Window_Control_Minimize.Activated:Connect(function()
-	tweenMainFrame(UDim2.new(0.5, 0, 0.34, 0), UDim2.new(0.3, 0, 0, 0), false)
+	tweenMainFrame(TopFrame.Position, UDim2.new(0.3, 0, 0, 0), false)
 	tweenTopFrame(UDim2.new(0.1, 0, 0.975, 0), UDim2.new(0.2, 0, 0.05, 0))
 end)
 
@@ -335,3 +335,36 @@ Window_Control_Exit.Activated:Connect(function()
 	InputEnd_Connect:Disconnect()
 	ScreenGui:Destroy()
 end)
+
+local TouchFrame = TopFrame
+
+local dragging = false
+local dragStart
+local startPos, startPos_2
+
+local function onDragStart(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = TouchFrame.Position
+        startPos_2 = MainFrame.Position
+    end
+end
+
+local function onDrag(input)
+    if not dragging then return end
+    
+    local delta = input.Position - dragStart
+    TouchFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    MainFrame.Position = UDim2.new(startPos_2.X.Scale, startPos_2.X.Offset + delta.X, startPos_2.Y.Scale, startPos_2.Y.Offset + delta.Y)
+end
+
+local function onDragEnd(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end
+
+TouchFrame.InputBegan:Connect(onDragStart)
+TouchFrame.InputChanged:Connect(onDrag)
+TouchFrame.InputEnded:Connect(onDragEnd)
