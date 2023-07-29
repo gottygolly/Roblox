@@ -1,0 +1,195 @@
+local module = {}
+
+local Suffix = {
+	"K",      -- Thousand (10^3)
+	"M",      -- Million (10^6)
+	"B",      -- Billion (10^9)
+	"T",      -- Trillion (10^12)
+	"Qa",     -- Quadrillion (10^15)
+	"Qt",     -- Quintillion (10^18)
+	"Sx",     -- Sextillion (10^21)
+	"Sp",     -- Septillion (10^24)
+	"Oc",     -- Octillion (10^27)
+	"No",     -- Nonillion (10^30)
+	"D",      -- Decillion (10^33)
+	"UnD",    -- Undecillion (10^36)
+	"DuD",    -- Duodecillion (10^39)
+	"TriD",   -- Tredecillion (10^42)
+	"QaD",    -- Quattuordecillion (10^45)
+	"QtD",    -- Quinquadecillion (10^48)
+	"SxD",    -- Sedecillion (10^51)
+	"SpD",    -- Septendecillion (10^54)
+	"OcD",    -- Octodecillion (10^57)
+	"NoD",    -- Novendecillion (10^60)
+	"Vg",     -- Vigintillion (10^63)
+	"UnVg",   -- Unvigintillion (10^66)
+	"DuVg",   -- Duovigintillion (10^69)
+	"TriVg",  -- Trevigintillion (10^72)
+	"QaVg",   -- Quattuorvigintillion (10^75)
+	"QtVg",   -- Quinquavigintillion (10^78)
+	"SxVg",   -- Sesvigintillion (10^81)
+	"SpVg",   -- Septemvigintillion (10^84)
+	"OcVg",   -- Octovigintillion (10^87)
+	"NoVg",   -- Novemvigintillion (10^90)
+	"Trg",    -- Trigintillion (10^93)
+	"UnTrg",  -- Untrigintillion (10^96)
+	"DuTrg",  -- Duotrigintillion (10^99)
+	"TriTrg", -- Tretrigintillion (10^102)
+	"QaTrg",  -- Quattuortrigintillion (10^105)
+	"QtTrg",  -- Quinquatrigintillion (10^108)
+	"SxTrg",  -- Sestrigintillion (10^111)
+	"SpTrg",  -- Septentrigintillion (10^114)
+	"OcTrg",  -- Octotrigintillion (10^117)
+	"NoTrg",  -- Novemtrigintillion (10^120)
+	"Qag",    -- Quadragintillion (10^123)
+	"UnQag",  -- Unquadragintillion (10^126)
+	"DuQag",  -- Duoquadragintillion (10^129)
+	"TriQag", -- Trequadragintillion (10^132)
+	"QaQag",  -- Quattuorquadragintillion (10^135)
+	"QtQag",  -- Quinquaquadragintillion (10^138)
+	"SxQag",  -- Sesquadragintillion (10^141)
+	"SpQag",  -- Septenquadragintillion (10^144)
+	"OcQag",  -- Octoquadragintillion (10^147)
+	"NoQag",  -- Novemquadragintillion (10^150)
+	"Sg",     -- Quinquagintillion (10^153)
+	"UnSg",   -- Unquinquagintillion (10^156)
+	"DuSg",   -- Duoquinquagintillion (10^159)
+	"TriSg",  -- Trequinquagintillion (10^162)
+	"QaSg",   -- Quattuorquinquagintillion (10^165)
+	"QtSg",   -- Quinquaquinquagintillion (10^168)
+	"SxSg",   -- Sesquinquagintillion (10^171)
+	"SpSg",   -- Septenquinquagintillion (10^174)
+	"OcSg",   -- Octoquinquagintillion (10^177)
+	"NoSg",   -- Novemquinquagintillion (10^180)
+	"Stg",    -- Sexagintillion (10^183)
+	"UnStg",  -- Unsexagintillion (10^186)
+	"DuStg",  -- Duosexagintillion (10^189)
+	"TriStg", -- Tresexagintillion (10^192)
+	"QaStg",  -- Quattuorsexagintillion (10^195)
+	"QtStg",  -- Quinquasexagintillion (10^198)
+	"SxStg",  -- Sesexagintillion (10^201)
+	"SpStg",  -- Septensexagintillion (10^204)
+	"OcStg",  -- Octosexagintillion (10^207)
+	"NoStg",  -- Novemsexagintillion (10^210)
+	"Otg",    -- Septuagintillion (10^213)
+	"UnOtg",  -- Unseptuagintillion (10^216)
+	"DuOtg",  -- Duoseptuagintillion (10^219)
+	"TriOtg", -- Treseptuagintillion (10^222)
+	"QaOtg",  -- Quattuorseptuagintillion (10^225)
+	"QtOtg",  -- Quinquaseptuagintillion (10^228)
+	"SxOtg",  -- Seseptuagintillion (10^231)
+	"SpOtg",  -- Septenseptuagintillion (10^234)
+	"OcOtg",  -- Octoseptuagintillion (10^237)
+	"NoOtg",  -- Novemseptuagintillion (10^240)
+	"Ntg",    -- Octogintillion (10^243)
+	"UnNtg",  -- Unoctogintillion (10^246)
+	"DuNtg",  -- Duooctogintillion (10^249)
+	"TriNtg", -- Treoctogintillion (10^252)
+	"QaNtg",  -- Quattuoroctogintillion (10^255)
+	"QtNtg",  -- Quinquaoctogintillion (10^258)
+	"SxNtg",  -- Sexoctogintillion (10^261)
+	"SpNtg",  -- Septenoctogintillion (10^264)
+	"OcNtg",  -- Octooctogintillion (10^267)
+	"NoNtg",  -- Novemoctogintillion (10^270)
+	"Cg",     -- Nonagintillion (10^273)
+	"UnCg",   -- Unnonagintillion (10^276)
+	"DuCg",   -- Duononagintillion (10^279)
+	"TriCg",  -- Trenonagintillion (10^282)
+	"QaCg",   -- Quattuornonagintillion (10^285)
+	"QtCg",   -- Quinquanonagintillion (10^288)
+	"SxCg",   -- Sennonagintillion (10^291)
+	"SpCg",   -- Septennonagintillion (10^294)
+	"OcCg",   -- Octononagintillion (10^297)
+	"NoCg",   -- Novemnonagintillion (10^300)
+	"NoCtg"   -- Centillion (10^303)
+	-- Continue the pattern for larger numbers if needed
+}
+
+
+function module.ConvertFromPrefix(n)
+
+	local sign, Num, Prefix = string.match(n, "([%-]?)([%d%.%-]+)(%a+)")
+	n = tonumber(n)
+	if Prefix == nil or Num == nil then return n end
+	if Prefix == "e" then return n end
+
+	local Expo
+	for i, index in pairs(Suffix) do
+
+		if Prefix == Suffix[i] then
+			Expo = 3 * i
+			break
+		end	
+	end
+
+	sign = (sign == "") and 1 or -1
+
+	local returnVar = (Num * (10^Expo))-- * sign
+
+	return returnVar
+end
+
+function module.ConvertToPrefix(n)
+	if tonumber(n) < 10000 then return n end
+	n = string.format("%.5e", n)
+
+	local sign, Num, expo = string.match(n, "([%-]?)([%d%.]+)[eE]?([%+%-]?%d+)")
+
+	if Num == nil or expo == nil then return n end
+	expo = string.gsub(expo, "+", "")
+
+	Num = tonumber(Num) * (10 ^ (expo % 3))
+
+	local addPrefix = Suffix[(expo - (expo % 3)) / 3]
+	addPrefix = (addPrefix == nil) and "" or addPrefix
+
+	sign = (sign == "") and "" or "-"
+
+	return sign .. Num .. addPrefix
+end
+
+function module.AddLargeNumber(n1, n2)
+	n1 =  module.ConvertFromPrefix(n1)
+	n2 =  module.ConvertFromPrefix(n2)
+	
+	local returnVal = n1 + n2
+	returnVal = string.format("%0.5f", returnVal)
+	returnVal = module.ConvertToPrefix(returnVal)
+
+	return returnVal
+
+end
+
+function module.SubtractLargeNumber(n1, n2)
+	n1 =  module.ConvertFromPrefix(n1)
+	n2 =  module.ConvertFromPrefix(n2)
+
+	local returnVal = n1 - n2
+	returnVal = string.format("%0.5f", returnVal)
+	returnVal = module.ConvertToPrefix(returnVal)
+
+	return returnVal
+
+end
+
+function module.MultiplyLargeNumber(n1, n2)
+	n1 =  module.ConvertFromPrefix(n1)
+	n2 =  module.ConvertFromPrefix(n2)
+
+	local returnVal = n1 * n2
+	returnVal = string.format("%0.5f", returnVal)
+	returnVal = module.ConvertToPrefix(returnVal)
+
+	return returnVal
+
+end
+
+function module.DecimalDisplay(n, decimalplaces)
+	local sign, Num, Prefix = string.match(n, "([%-]?)([%d%.%-]+)(%a+)")
+	if Num == nil then return string.format("%."..decimalplaces .. "f", n) end
+
+	local returnValue = string.format("%."..decimalplaces .. "f", Num) .. Prefix
+	return returnValue
+end
+
+return module
